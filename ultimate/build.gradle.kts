@@ -12,6 +12,8 @@ val ideaProjectResources =  project(":idea").the<JavaPluginConvention>().sourceS
 
 evaluationDependsOn(":prepare:idea-plugin")
 
+val intellijUltimateEnabled: Boolean by rootProject.extra
+
 val springClasspath by configurations.creating
 
 dependencies {
@@ -31,21 +33,23 @@ dependencies {
     compile(project(":idea:idea-gradle")) { isTransitive = false }
     compileOnly(intellijCoreDep()) { includeJars("intellij-core") }
     compileOnly(intellijDep()) { includeJars("annotations", "trove4j", "openapi", "idea", "util", "jdom") }
-    compileOnly(intellijPluginDep("CSS"))
-    compileOnly(intellijPluginDep("DatabaseTools"))
-    compileOnly(intellijPluginDep("JavaEE"))
-    compileOnly(intellijPluginDep("jsp"))
-    compileOnly(intellijPluginDep("PersistenceSupport"))
-    compileOnly(intellijPluginDep("Spring"))
+    if (intellijUltimateEnabled) {
+        compileOnly(intellijPluginDep("CSS"))
+        compileOnly(intellijPluginDep("DatabaseTools"))
+        compileOnly(intellijPluginDep("JavaEE"))
+        compileOnly(intellijPluginDep("jsp"))
+        compileOnly(intellijPluginDep("PersistenceSupport"))
+        compileOnly(intellijPluginDep("Spring"))
+        compileOnly(intellijPluginDep("uml"))
+        compileOnly(intellijPluginDep("JavaScriptLanguage"))
+        compileOnly(intellijPluginDep("JavaScriptDebugger"))
+        compileOnly(intellijPluginDep("NodeJS"))
+    }
     compileOnly(intellijPluginDep("properties"))
     compileOnly(intellijPluginDep("java-i18n"))
     compileOnly(intellijPluginDep("gradle"))
     compileOnly(intellijPluginDep("Groovy"))
     compileOnly(intellijPluginDep("junit"))
-    compileOnly(intellijPluginDep("uml"))
-    compileOnly(intellijPluginDep("JavaScriptLanguage"))
-    compileOnly(intellijPluginDep("JavaScriptDebugger"))
-    compileOnly(intellijPluginDep("NodeJS"))
 
     testCompile(projectDist(":kotlin-test:kotlin-test-jvm"))
     testCompileOnly(project(":idea:idea-test-framework")) { isTransitive = false }
@@ -87,22 +91,26 @@ dependencies {
     springClasspath(commonDep("org.springframework", "spring-web"))
 
     testCompileOnly(intellijDep()) { includeJars("gson-2.5", "annotations", "trove4j", "openapi", "idea", "util", "jdom") }
+
     testRuntime(intellijDep())
-    testCompile(intellijPluginDep("CSS"))
-    testCompile(intellijPluginDep("DatabaseTools"))
-    testCompile(intellijPluginDep("JavaEE"))
-    testCompile(intellijPluginDep("jsp"))
-    testCompile(intellijPluginDep("PersistenceSupport"))
-    testCompile(intellijPluginDep("Spring"))
+
+    if (intellijUltimateEnabled) {
+        testCompile(intellijPluginDep("CSS"))
+        testCompile(intellijPluginDep("DatabaseTools"))
+        testCompile(intellijPluginDep("JavaEE"))
+        testCompile(intellijPluginDep("jsp"))
+        testCompile(intellijPluginDep("PersistenceSupport"))
+        testCompile(intellijPluginDep("Spring"))
+        testCompile(intellijPluginDep("uml"))
+        testCompile(intellijPluginDep("JavaScriptLanguage"))
+        testCompile(intellijPluginDep("JavaScriptDebugger"))
+        testCompile(intellijPluginDep("NodeJS"))
+    }
     testCompile(intellijPluginDep("properties"))
     testCompile(intellijPluginDep("java-i18n"))
     testCompile(intellijPluginDep("gradle"))
     testCompile(intellijPluginDep("Groovy"))
     testCompile(intellijPluginDep("junit"))
-    testCompile(intellijPluginDep("uml"))
-    testCompile(intellijPluginDep("JavaScriptLanguage"))
-    testCompile(intellijPluginDep("JavaScriptDebugger"))
-    testCompile(intellijPluginDep("NodeJS"))
     testRuntime(intellijPluginDep("coverage"))
     testRuntime(intellijPluginDep("maven"))
     testRuntime(intellijPluginDep("android"))
