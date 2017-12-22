@@ -45,6 +45,15 @@ public data class MatchGroup(val value: String)
  */
 public class Regex(pattern: String, options: Set<RegexOption>) {
 
+    @Suppress("CONFLICTING_OVERLOADS")
+    /** Creates a regular expression from the specified [pattern] string and the specified single [option].  */
+    public constructor(pattern: String, option: RegexOption) : this(pattern, setOf(option))
+
+    @Suppress("CONFLICTING_OVERLOADS")
+    /** Creates a regular expression from the specified [pattern] string and the default options.  */
+    public constructor(pattern: String) : this(pattern, emptySet())
+
+
     /** The pattern string of this regular expression. */
     public val pattern: String = pattern
     /** The set of options that were used to create this regular expression. */
@@ -170,8 +179,12 @@ public class Regex(pattern: String, options: Set<RegexOption>) {
 }
 
 /** Creates a regular expression from the specified [pattern] string and the specified single [option].  */
+@Suppress("CONFLICTING_OVERLOADS")
+@Deprecated("For compatibility", level = DeprecationLevel.HIDDEN)
 public fun Regex(pattern: String, option: RegexOption): Regex = Regex(pattern, setOf(option))
 
+@Suppress("CONFLICTING_OVERLOADS")
+@Deprecated("For compatibility", level = DeprecationLevel.HIDDEN)
 /** Creates a regular expression from the specified [pattern] string and the default options.  */
 public fun Regex(pattern: String): Regex = Regex(pattern, emptySet())
 
