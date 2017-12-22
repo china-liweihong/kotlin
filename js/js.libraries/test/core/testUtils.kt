@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-package kotlin.test
+package test
+
+import kotlin.test.*
 
 public fun assertTypeEquals(expected: Any?, actual: Any?) {
     assertEquals(expected?.let { it::class.js }, actual?.let { it::class.js })
