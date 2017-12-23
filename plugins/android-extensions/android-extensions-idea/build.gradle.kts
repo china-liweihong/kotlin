@@ -9,6 +9,9 @@ val androidSdk by configurations.creating
 val androidJar by configurations.creating
 
 dependencies {
+    testRuntime(intellijCoreDep()) { includeJars("intellij-core") }
+    testRuntime(intellijDep())
+
     compile(project(":compiler:util"))
     compile(project(":compiler:light-classes"))
     compile(project(":idea:idea-core"))
@@ -41,7 +44,6 @@ dependencies {
     testRuntime(project(":noarg-ide-plugin"))
     testRuntime(project(":allopen-ide-plugin"))
     testRuntime(project(":plugins:lint"))
-    testRuntime(intellijDep())
     testRuntime(intellijPluginDep("junit"))
     testRuntime(intellijPluginDep("IntelliLang"))
     testRuntime(intellijPluginDep("properties"))

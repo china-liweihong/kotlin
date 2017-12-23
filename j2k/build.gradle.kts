@@ -18,6 +18,7 @@ val usedIntellijPlugins = arrayOf(
         "java-decompiler")
 
 dependencies {
+    testRuntime(intellijCoreDep()) { includeJars("intellij-core") }
     testRuntime(intellijDep())
 
     compile(projectDist(":kotlin-stdlib"))

@@ -4,6 +4,9 @@ apply { plugin("kotlin") }
 val androidSdk by configurations.creating
 
 dependencies {
+    testRuntime(intellijCoreDep()) { includeJars("intellij-core") }
+    testRuntime(intellijDep())
+
     compile(project(":compiler:util"))
     compile(project(":jps-plugin"))
     compile(project(":plugins:android-extensions-compiler"))
@@ -20,8 +23,6 @@ dependencies {
     testCompileOnly(intellijDep("jps-build-test")) { includeJars("jps-build-test") }
 
     testRuntime(intellijPluginDep("android"))
-    testRuntime(intellijCoreDep()) { includeJars("intellij-core") }
-    testRuntime(intellijDep())
     testRuntime(intellijDep("jps-build-test"))
     testRuntime(intellijDep("jps-standalone"))
 
