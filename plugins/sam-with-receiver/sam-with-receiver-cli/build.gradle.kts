@@ -46,5 +46,6 @@ ideaPlugin {
 }
 
 projectTest {
+    dependsOn(":prepare:mock-runtime-for-test:dist")
     workingDir = rootDir
 }

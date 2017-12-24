@@ -11,6 +11,7 @@ private fun Project.intellijRepoDir() = File("${project.rootDir.absoluteFile}/bu
 fun RepositoryHandler.intellijSdkRepo(project: Project): IvyArtifactRepository = ivy {
     val baseDir = project.intellijRepoDir()
     setUrl(baseDir)
+    ivyPattern("${baseDir.canonicalPath}/[organisation]/[revision]/[module]Ultimate.ivy.xml")
     ivyPattern("${baseDir.canonicalPath}/[organisation]/[revision]/[module].ivy.xml")
     ivyPattern("${baseDir.canonicalPath}/[organisation]/[revision]/intellijUltimate.plugin.[module].ivy.xml")
     ivyPattern("${baseDir.canonicalPath}/[organisation]/[revision]/intellij.plugin.[module].ivy.xml")
@@ -29,6 +30,10 @@ fun Project.intellijDep(module: String = "intellij") = "kotlin.build.custom.deps
 fun Project.intellijCoreDep() = intellijDep("intellij-core")
 
 fun Project.intellijPluginDep(plugin: String) = intellijDep(plugin)
+
+fun Project.intellijUltimateDep() = intellijDep("intellij")
+
+fun Project.intellijUltimatePluginDep(plugin: String) = intellijDep(plugin)
 
 fun ModuleDependency.includeJars(vararg names: String) {
     names.forEach {

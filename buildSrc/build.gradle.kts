@@ -39,14 +39,9 @@ fun Project.getBooleanProperty(name: String): Boolean? = this.findProperty("inte
 
 val intellijUltimateEnabled = project.getBooleanProperty("intellijUltimateEnabled")
                               ?: project.hasProperty("teamcity")
-                              || project.hasProperty("teamcity.build.id")
-                              || extra.has("teamcity")
-                              || extra.has("teamcity.build.id")
                               || System.getenv("TEAMCITY_VERSION") != null
 val intellijSeparateSdks = project.getBooleanProperty("intellijSeparateSdks") ?: false
-extra["intellijUltimateEnabled"] = intellijUltimateEnabled.also {
-    println("!!! intellijUltimateEnabled = $it (teamcity.build.id = ${project.findProperty("teamcity.build.id")}/${extra.has("teamcity.build.id")}, teamcity.version = ${System.getenv("TEAMCITY_VERSION")})")
-}
+extra["intellijUltimateEnabled"] = intellijUltimateEnabled
 extra["intellijSeparateSdks"] = intellijSeparateSdks
 extra["intellijRepo"] = "https://www.jetbrains.com/intellij-repository"
 extra["intellijReleaseType"] = "releases" // or "snapshots"
