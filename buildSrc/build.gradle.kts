@@ -42,9 +42,10 @@ val intellijUltimateEnabled = project.getBooleanProperty("intellijUltimateEnable
                               || project.hasProperty("teamcity.build.id")
                               || extra.has("teamcity")
                               || extra.has("teamcity.build.id")
+                              || System.getProperty("teamcity.version") != null
 val intellijSeparateSdks = project.getBooleanProperty("intellijSeparateSdks") ?: false
 extra["intellijUltimateEnabled"] = intellijUltimateEnabled.also {
-    println("!!! intellijUltimateEnabled = $it (teamcity.build.id = ${project.findProperty("teamcity.build.id")}/${extra.has("teamcity.build.id")}, teamcity = ${extra.has("teamcity")})")
+    println("!!! intellijUltimateEnabled = $it (teamcity.build.id = ${project.findProperty("teamcity.build.id")}/${extra.has("teamcity.build.id")}, teamcity.version = ${System.getProperty("teamcity.version")})")
 }
 extra["intellijSeparateSdks"] = intellijSeparateSdks
 extra["intellijRepo"] = "https://www.jetbrains.com/intellij-repository"
