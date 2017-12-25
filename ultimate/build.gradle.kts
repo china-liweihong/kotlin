@@ -18,6 +18,7 @@ val springClasspath by configurations.creating
 
 dependencies {
     if (intellijUltimateEnabled) {
+        testRuntime(intellijCoreDep()) { includeJars("intellij-core") }
         testRuntime(intellijUltimateDep())
     }
 
@@ -38,6 +39,7 @@ dependencies {
     compileOnly(intellijCoreDep()) { includeJars("intellij-core") }
 
     if (intellijUltimateEnabled) {
+        compileOnly(intellijUltimatePluginDep("NodeJS"))
         compileOnly(intellijUltimateDep()) { includeJars("annotations", "trove4j", "openapi", "idea", "util", "jdom") }
         compileOnly(intellijUltimatePluginDep("CSS"))
         compileOnly(intellijUltimatePluginDep("DatabaseTools"))
@@ -45,59 +47,48 @@ dependencies {
         compileOnly(intellijUltimatePluginDep("jsp"))
         compileOnly(intellijUltimatePluginDep("PersistenceSupport"))
         compileOnly(intellijUltimatePluginDep("Spring"))
-        compileOnly(intellijUltimatePluginDep("uml"))
-        compileOnly(intellijUltimatePluginDep("JavaScriptLanguage"))
-        compileOnly(intellijUltimatePluginDep("JavaScriptDebugger"))
-        compileOnly(intellijUltimatePluginDep("NodeJS"))
         compileOnly(intellijUltimatePluginDep("properties"))
         compileOnly(intellijUltimatePluginDep("java-i18n"))
         compileOnly(intellijUltimatePluginDep("gradle"))
         compileOnly(intellijUltimatePluginDep("Groovy"))
         compileOnly(intellijUltimatePluginDep("junit"))
+        compileOnly(intellijUltimatePluginDep("uml"))
+        compileOnly(intellijUltimatePluginDep("JavaScriptLanguage"))
+        compileOnly(intellijUltimatePluginDep("JavaScriptDebugger"))
     }
 
     testCompile(projectDist(":kotlin-test:kotlin-test-jvm"))
-    testCompileOnly(project(":idea:idea-test-framework")) { isTransitive = false }
-    testCompileOnly(project(":plugins:lint")) { isTransitive = false }
-    testCompileOnly(project(":idea:idea-jvm")) { isTransitive = false }
+    testCompile(project(":idea:idea-test-framework")) { isTransitive = false }
+    testCompile(project(":plugins:lint")) { isTransitive = false }
+    testCompile(project(":idea:idea-jvm")) { isTransitive = false }
     testCompile(projectTests(":compiler:tests-common"))
     testCompile(projectTests(":idea")) { isTransitive = false }
     testCompile(projectTests(":generators:test-generator"))
     testCompile(commonDep("junit:junit"))
+    if (intellijUltimateEnabled) {
+        testCompileOnly(intellijUltimateDep()) { includeJars("gson-2.5", "annotations", "trove4j", "openapi", "idea", "util", "jdom") }
+    }
     testCompile(commonDep("org.jetbrains.kotlinx", "kotlinx-coroutines-core")) { isTransitive = false }
 
     testRuntime(projectDist(":kotlin-reflect"))
     testRuntime(projectDist(":kotlin-script-runtime"))
     testRuntime(projectRuntimeJar(":kotlin-compiler"))
-    testRuntime(project(":plugins:android-extensions-ide"))
-    testRuntime(project(":plugins:android-extensions-compiler"))
-    testRuntime(project(":plugins:annotation-based-compiler-plugins-ide-support"))
-    testRuntime(project(":idea:idea-android"))
-    testRuntime(project(":idea:idea-maven"))
-    testRuntime(project(":idea:idea-jps-common"))
-    testRuntime(project(":idea:formatter"))
-    testRuntime(project(":sam-with-receiver-ide-plugin"))
-    testRuntime(project(":kotlin-sam-with-receiver-compiler-plugin"))
-    testRuntime(project(":noarg-ide-plugin"))
-    testRuntime(project(":kotlin-noarg-compiler-plugin"))
-    testRuntime(project(":allopen-ide-plugin"))
-    testRuntime(project(":kotlin-allopen-compiler-plugin"))
-    testRuntime(project(":plugins:kapt3-idea"))
-    testRuntime(files("${System.getProperty("java.home")}/../lib/tools.jar"))
-    testRuntime(project(":plugins:kapt3-idea"))
-    testRuntime(project(":idea:idea-test-framework"))
-    testRuntime(project(":plugins:lint"))
-    testRuntime(project(":idea:idea-jvm"))
-
-    springClasspath(commonDep("org.springframework", "spring-core"))
-    springClasspath(commonDep("org.springframework", "spring-beans"))
-    springClasspath(commonDep("org.springframework", "spring-context"))
-    springClasspath(commonDep("org.springframework", "spring-tx"))
-    springClasspath(commonDep("org.springframework", "spring-web"))
+    testRuntime(project(":plugins:android-extensions-ide")) { isTransitive = false }
+    testRuntime(project(":plugins:android-extensions-compiler")) { isTransitive = false }
+    testRuntime(project(":plugins:annotation-based-compiler-plugins-ide-support")) { isTransitive = false }
+    testRuntime(project(":idea:idea-android")) { isTransitive = false }
+    testRuntime(project(":idea:idea-maven")) { isTransitive = false }
+    testRuntime(project(":idea:idea-jps-common")) { isTransitive = false }
+    testRuntime(project(":idea:formatter")) { isTransitive = false }
+    testRuntime(project(":sam-with-receiver-ide-plugin")) { isTransitive = false }
+    testRuntime(project(":kotlin-sam-with-receiver-compiler-plugin")) { isTransitive = false }
+    testRuntime(project(":noarg-ide-plugin")) { isTransitive = false }
+    testRuntime(project(":kotlin-noarg-compiler-plugin")) { isTransitive = false }
+    testRuntime(project(":allopen-ide-plugin")) { isTransitive = false }
+    testRuntime(project(":kotlin-allopen-compiler-plugin")) { isTransitive = false }
+    testRuntime(project(":plugins:kapt3-idea")) { isTransitive = false }
 
     if (intellijUltimateEnabled) {
-        testCompileOnly(intellijUltimateDep()) { includeJars("gson-2.5", "annotations", "trove4j", "openapi", "idea", "util", "jdom") }
-
         testCompile(intellijUltimatePluginDep("CSS"))
         testCompile(intellijUltimatePluginDep("DatabaseTools"))
         testCompile(intellijUltimatePluginDep("JavaEE"))
@@ -121,6 +112,14 @@ dependencies {
         testRuntime(intellijUltimatePluginDep("copyright"))
         testRuntime(intellijUltimatePluginDep("java-decompiler"))
     }
+
+    testRuntime(files("${System.getProperty("java.home")}/../lib/tools.jar"))
+
+    springClasspath(commonDep("org.springframework", "spring-core"))
+    springClasspath(commonDep("org.springframework", "spring-beans"))
+    springClasspath(commonDep("org.springframework", "spring-context"))
+    springClasspath(commonDep("org.springframework", "spring-tx"))
+    springClasspath(commonDep("org.springframework", "spring-web"))
 }
 
 val preparedResources = File(buildDir, "prepResources")
@@ -196,7 +195,7 @@ projectTest {
     dependsOn(preparePluginXml)
     workingDir = rootDir
     doFirst {
-        systemProperty("idea.home.path", intellijRootDir().canonicalPath)
+        systemProperty("idea.home.path", intellijUltimateRootDir().canonicalPath)
         systemProperty("spring.classpath", springClasspath.asPath)
     }
 }

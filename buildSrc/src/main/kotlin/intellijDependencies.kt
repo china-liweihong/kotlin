@@ -1,5 +1,6 @@
 @file:Suppress("unused") // usages in build scripts are not tracked properly
 
+import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.api.artifacts.ModuleDependency
 import org.gradle.kotlin.dsl.extra
@@ -51,5 +52,16 @@ fun ModuleDependency.includeIntellijCoreJarDependencies(project: Project) =
 fun ModuleDependency.includeIntellijCoreJarDependencies(project: Project, jarsFilterPredicate: (String) -> Boolean) =
         includeJars(*(project.rootProject.extra["IntellijCoreDependencies"] as List<String>).filter { jarsFilterPredicate(it) }.toTypedArray())
 
-fun Project.intellijRootDir() = File(intellijRepoDir(), "kotlin.build.custom.deps/${rootProject.extra["versions.intellijSdk"]}/intellij")
+fun Project.isIntellijCommunityAvailable() = !(rootProject.extra["intellijUltimateEnabled"] as Boolean) || !(rootProject.extra["intellijSeparateSdks"] as Boolean)
+
+fun Project.isIntellijUltimateSdkAvailable() = (rootProject.extra["intellijUltimateEnabled"] as Boolean)
+
+fun Project.intellijRootDir() =
+        File(intellijRepoDir(), "kotlin.build.custom.deps/${rootProject.extra["versions.intellijSdk"]}/intellij${if (isIntellijCommunityAvailable()) "" else "Ultimate"}")
+
+fun Project.intellijUltimateRootDir() =
+        if (isIntellijUltimateSdkAvailable())
+            File(intellijRepoDir(), "kotlin.build.custom.deps/${rootProject.extra["versions.intellijSdk"]}/intellijUltimate")
+        else
+            throw GradleException("intellij ultimate SDK is not available")
 
