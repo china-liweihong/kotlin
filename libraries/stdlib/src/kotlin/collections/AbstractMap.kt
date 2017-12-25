@@ -20,6 +20,8 @@
 
 package kotlin.collections
 
+import kotlin.jvm.* // TODO: fix Volatile fq-name in JS
+
 /**
  * Provides a skeletal implementation of the read-only [Map] interface.
  *
